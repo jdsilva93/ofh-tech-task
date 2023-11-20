@@ -1,2 +1,1 @@
-# ofh-tech-task
-Cloud Security Engineer Technical Interview Prep
+# OFH - Technical Task

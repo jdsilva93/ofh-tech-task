@@ -1,0 +1,9 @@
+let lastSixWeeks = ago(42d);
+let thisMonth = startofmonth(now());
+let Tuesday = time(2.00:00:00);
+let Thursday = time(4.00:00:00);
+SigninLogs
+| where TimeGenerated between (lastSixWeeks .. now())
+| where dayofweek(TimeGenerated) == Tuesday or dayofweek(TimeGenerated) == Thursday
+| where hourofday(TimeGenerated) between (20 .. 22)
+join kind inner on 

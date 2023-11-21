@@ -1,9 +1,16 @@
 let lastSixWeeks = ago(42d);
 let thisMonth = startofmonth(now());
+let thisWeek = startofweek(now());
 let Tuesday = time(2.00:00:00);
 let Thursday = time(4.00:00:00);
 SigninLogs
 | where TimeGenerated between (lastSixWeeks .. now())
 | where dayofweek(TimeGenerated) == Tuesday or dayofweek(TimeGenerated) == Thursday
 | where hourofday(TimeGenerated) between (20 .. 22)
-join kind inner on 
+| join kind=inner 
+    EmailEvents on TimeGenerated
+    | where TimeGenerated >= thisMonth
+    | where DeliveryLocation == 'Inbox' and AttachmentCount >= 2
+    | summarize totalEmails = count(), totalUrls = sum(UrlCount), User = split          (RecipientEmailAddress, "@")[2], userEmail = RecipientEmailAddress
+    | extend User = split(userEmail, "@")[2], percentage = round((totalEmails)/(totalEmails) * 100,4)
+    | project thisWeek, userEmail, User, totalEmails, percentage, totalUrls

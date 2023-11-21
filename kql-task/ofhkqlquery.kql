@@ -11,6 +11,6 @@ SigninLogs
     EmailEvents on TimeGenerated
     | where TimeGenerated >= thisMonth
     | where DeliveryLocation == 'Inbox' and AttachmentCount >= 2
-    | summarize totalEmails = count(), totalUrls = sum(UrlCount), User = split          (RecipientEmailAddress, "@")[2], userEmail = RecipientEmailAddress
+    | summarize totalEmails = count(), totalUrls = sum(UrlCount), User = split(RecipientEmailAddress, "@")[0], userEmail = RecipientEmailAddress
     | extend User = split(userEmail, "@")[2], percentage = round((totalEmails)/(totalEmails) * 100,4)
     | project thisWeek, userEmail, User, totalEmails, percentage, totalUrls
